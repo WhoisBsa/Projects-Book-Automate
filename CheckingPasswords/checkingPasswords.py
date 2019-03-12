@@ -9,11 +9,44 @@ def stripRegex(password):
     password = re.sub(r'\s', '', password)
     return password
 
+def checkPass(password):
+    """ Check Password """
+    countNum = countLower = countUpper = 0
+    check = re.compile(r'([a-zA-Z0-9!@#$%&\*-_=+,<\.>;:?])')
+    
+    for i in check.findall(password):
+        if i.isnumeric():
+            countNum += 1
+        if i.islower():
+            countLower += 1
+        if i.isupper():
+            countUpper += 1
 
-def mkpass(size=8):
-    """
-    Make a strong password
-    """
+    if countNum == 0 or countUpper == 0 or countLower == 0:
+        print()
+        print('-' * 25)
+        print(f'{"":<2}Your password is weak{"":>2}')
+        print('-' * 25)
+        option = input('Do you want to generate a password? [Y/N]: ').upper().strip()
+        while option not in 'YN':
+            option = input('Just Y or N, please: ').upper().strip()
+        if option == 'N':
+            print('=' * 44)
+            print(f"{'=':<2}OK. Good luck and hope you're not hacked{'=':>2}")
+            print('=' * 44)
+        else:
+            password = mkPass()
+            print('=' * 38)
+            print(f'{"=":<2}Your password has been generated!!{"=":>2}')
+            print(f'{"=":<4}Your new password is: {password}{"=":>4}')
+            print('=' * 38)
+    else:
+        print('=' * 40)
+        print(f'{"=":<2}Your password is secure. Good job!:){"=":>2}')
+        print('=' * 40)
+
+def mkPass(size=8):
+    """ Make a strong password """
     from random import randint
     import string
 
@@ -50,35 +83,7 @@ def main():
         password = str(input('Too short. Try again: '))
             
     password = stripRegex(password)
-    countNum = countLower =countUpper = 0
-    check = re.compile(r'([a-zA-Z0-9!@#$%&\*-_=+,<\.>;:?])')
-    
-    for i in check.findall(password):
-        if i.isnumeric():
-            countNum += 1
-        if i.islower():
-            countLower += 1
-        if i.isupper():
-            countUpper += 1
-
-    if countNum == 0 or countUpper == 0 or countLower == 0:
-        print('Your password is weak.')
-        option = input('Do you want to generate a password? [Y/N]: ').upper().strip()
-        while option not in 'YN':
-            option = input('Just Y or N, please: ').upper().strip()
-        if option == 'N':
-            print("OK. Good luck and hope you're not hacked :)")
-            print('=-=' * 16)
-        else:
-            password = mkpass()
-            print('=' * 38)
-            print(f'{"=":<2}Your password has been generated!!{"=":>2}')
-            print(f'{"=":<4}Your new password is: {password}{"=":>4}')
-            print('=' * 38)
-    else:
-        print('=' * 40)
-        print(f'{"=":<2}Your password is secure. Good job!:){"=":>2}')
-        print('=' * 40)
+    password = checkPass(password)
 
 if __name__ == '__main__':
     main()
