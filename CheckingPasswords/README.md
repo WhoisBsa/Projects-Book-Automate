@@ -5,8 +5,8 @@ CheckingPasswords is a simple project that has the only functionality to detect 
 ---
 ### The program is composed of four functions:
 
-- stripPassword:  Return the password pure, without spaces  
-- checkPassword:  Checks the strength of the password and asks, if it is weak, if it wants to generate a new  
+- stripRegex:  Return the password pure, without spaces  
+- checkPassw:  Checks the strength of the password and asks, if it is weak, if it wants to generate a new  
 - mkPass:         If the password is weak, and the user agree in generate, returns the new password  
 - main:           The known main function  
 
