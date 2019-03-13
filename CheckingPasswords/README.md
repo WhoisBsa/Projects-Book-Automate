@@ -15,8 +15,8 @@ CheckingPasswords is a simple project that has the only functionality to detect 
 1.   The user type the password  
 2.  The `stripPassword` function is triggered  
 3.  With the `re` module the programm compile the password  
-4.  With the `findall()` function, the program catch all chars of the password  
-5.  Validate the password with `is<name>` function
+4.  With the `match` function, the program check the result
+5.  Validate the password with the conditions
 6.  If it does not respond to all aspects (uppercase, lowercase, digits)
 7.  Asks the user if he wants generate a new password (`mkPass`)  
 8.  If the answer is yes, the new password is generated, if is no, well, good lucky :)
