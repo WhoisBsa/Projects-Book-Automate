@@ -9,24 +9,25 @@ def stripRegex(password):
     password = re.sub(r'\s', '', password)
     return password
 
+
+def strongPass():
+    stgPass = re.compile(r'''^
+                (?=.*[A-Za-z])          # uppercase and lowercase
+                (?=.*\d)                # digits
+                (?=.*[@$!%*#?&])        # special chars
+                [A-Za-z\d@$!%*#?&]{8,}$ # all. Min of 8 chars
+                ''', re.VERBOSE)
+    return stgPass
+
+
 def checkPass(password):
     """ Check Password """
-    countNum = countLower = countUpper = 0
-    check = re.compile(r'([a-zA-Z0-9!@#$%&\*-_=+,<\.>;:?])')
+    result = re.match(strongPass(), password)
     
-    for i in check.findall(password):
-        if i.isnumeric():
-            countNum += 1
-        if i.islower():
-            countLower += 1
-        if i.isupper():
-            countUpper += 1
-
-    if countNum == 0 or countUpper == 0 or countLower == 0:
-        print()
-        print('-' * 25)
-        print(f'{"":<2}Your password is weak{"":>2}')
-        print('-' * 25)
+    if result:
+        printResult(result)
+    else:
+        printResult(result)
         option = input('Do you want to generate a password? [Y/N]: ').upper().strip()
         while option not in 'YN':
             option = input('Just Y or N, please: ').upper().strip()
@@ -35,42 +36,55 @@ def checkPass(password):
             print(f"{'=':<2}OK. Good luck and hope you're not hacked{'=':>2}")
             print('=' * 44)
         else:
-            password = mkPass()
-            print('=' * 38)
-            print(f'{"=":<2}Your password has been generated!!{"=":>2}')
-            print(f'{"=":<4}Your new password is: {password}{"=":>4}')
-            print('=' * 38)
-    else:
-        print('=' * 40)
-        print(f'{"=":<2}Your password is secure. Good job!:){"=":>2}')
-        print('=' * 40)
+            printPass(password)
+        
 
 def mkPass(size=8):
     """ Make a strong password """
-    from random import randint
+    from random import choice
     import string
 
     chars = []
     chars.extend([i for i in string.ascii_letters])
     chars.extend([i for i in string.digits])
-    chars.extend([i for i in '!@#$%&*-_=+,<.>;:?'])
-    count = 0
+    chars.extend([i for i in '@$!%*#?&'])
     passwd = ''
     
     for i in range(size):
-        passwd += chars[randint(0,  len(chars) - 1)]
+        passwd += choice(chars)
+    
     while True:
-        for i in passwd:
-            if i.isnumeric():
-                count += 1
-        if count == 0:
+        result = re.match(strongPass(), passwd)
+        if result:
+                break
+        else:
             passwd = ''
             for i in range(size):
-                passwd += chars[randint(0,  len(chars) - 1)]
-        else:
-            break
-            
+                passwd += choice(chars)
+                 
     return passwd
+
+
+def printPass(password):
+    """ Print the password """
+    password = mkPass()
+    print('=' * 38)
+    print(f'{"=":<2}Your password has been generated!!{"=":>2}')
+    print(f'{"=":<4}Your new password is: {password}{"=":>4}')
+    print('=' * 38)
+
+
+def printResult(resul):
+    """ Print Result """
+    if resul:
+        print('=' * 40)
+        print(f'{"=":<2}Your password is secure. Good job!:){"=":>2}')
+        print('=' * 40)
+    else:
+        print()
+        print('-' * 25)
+        print(f'{"":<2}Your password is weak{"":>2}')
+        print('-' * 25)
 
 
 def main():
@@ -78,10 +92,8 @@ def main():
     print('=' * 30)
     print(f'{"=":<2}Strong Passwords Detection{"=":>2}')
     print('=' * 30)
-    password = str(input('Password: '))
-    while len(password) < 8:
-        password = str(input('Too short. Try again: '))
-            
+
+    password = str(input('Password: '))          
     password = stripRegex(password)
     password = checkPass(password)
 
