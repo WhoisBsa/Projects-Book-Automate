@@ -12,7 +12,7 @@ CheckingPasswords is a simple project that has the only functionality to detect 
 
 ### And it works basically like this:
 
-1.   The user type the password  
+1.  The user type the password  
 2.  The `stripPassword` function is triggered  
 3.  With the `re` module the programm compile the password  
 4.  With the `match` function, the program check the result
